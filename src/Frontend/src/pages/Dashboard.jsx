@@ -106,6 +106,13 @@ export const Dashboard = ({ onSelectPlan }) => {
     }
   };
 
+  const getGreeting = () => {
+    const hour = new Date().getHours();
+    if (hour < 12) return 'Dobro jutro';
+    if (hour < 18) return 'Dobar dan';
+    return 'Dobro veče';
+  };
+
   return (
     <div style={styles.container} className="animate-fade">
       {/* Tabbed view if admin */}
@@ -133,7 +140,7 @@ export const Dashboard = ({ onSelectPlan }) => {
           <div style={styles.header}>
             <div>
               <h2 style={styles.title}>
-                {user?.isAdmin() ? 'Svi planovi putovanja u sistemu' : 'Vaša putovanja'}
+                {user?.isAdmin() ? 'Svi planovi putovanja u sistemu' : `${getGreeting()}, ${user?.name || 'putnik'}!`}
               </h2>
               <p style={styles.subtitle}>
                 {user?.isAdmin() 

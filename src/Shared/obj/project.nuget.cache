@@ -1,0 +1,23 @@
+{
+  "version": 2,
+  "dgSpecHash": "Zok1cP4qR9I=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\stoji\\.gemini\\antigravity\\scratch\\travel-planner\\src\\Shared\\Shared.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\stoji\\.nuget\\packages\\microsoft.bcl.cryptography\\10.0.2\\microsoft.bcl.cryptography.10.0.2.nupkg.sha512",
+    "C:\\Users\\stoji\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\8.0.0\\microsoft.extensions.dependencyinjection.abstractions.8.0.0.nupkg.sha512",
+    "C:\\Users\\stoji\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\8.0.0\\microsoft.extensions.logging.abstractions.8.0.0.nupkg.sha512",
+    "C:\\Users\\stoji\\.nuget\\packages\\microsoft.identitymodel.abstractions\\8.19.1\\microsoft.identitymodel.abstractions.8.19.1.nupkg.sha512",
+    "C:\\Users\\stoji\\.nuget\\packages\\microsoft.identitymodel.jsonwebtokens\\8.19.1\\microsoft.identitymodel.jsonwebtokens.8.19.1.nupkg.sha512",
+    "C:\\Users\\stoji\\.nuget\\packages\\microsoft.identitymodel.logging\\8.19.1\\microsoft.identitymodel.logging.8.19.1.nupkg.sha512",
+    "C:\\Users\\stoji\\.nuget\\packages\\microsoft.identitymodel.tokens\\8.19.1\\microsoft.identitymodel.tokens.8.19.1.nupkg.sha512",
+    "C:\\Users\\stoji\\.nuget\\packages\\microsoft.servicefabric\\11.4.268\\microsoft.servicefabric.11.4.268.nupkg.sha512",
+    "C:\\Users\\stoji\\.nuget\\packages\\microsoft.servicefabric.data\\8.4.268\\microsoft.servicefabric.data.8.4.268.nupkg.sha512",
+    "C:\\Users\\stoji\\.nuget\\packages\\microsoft.servicefabric.data.extensions\\8.4.268\\microsoft.servicefabric.data.extensions.8.4.268.nupkg.sha512",
+    "C:\\Users\\stoji\\.nuget\\packages\\microsoft.servicefabric.data.interfaces\\8.4.268\\microsoft.servicefabric.data.interfaces.8.4.268.nupkg.sha512",
+    "C:\\Users\\stoji\\.nuget\\packages\\microsoft.servicefabric.diagnostics.internal\\8.4.268\\microsoft.servicefabric.diagnostics.internal.8.4.268.nupkg.sha512",
+    "C:\\Users\\stoji\\.nuget\\packages\\microsoft.servicefabric.services\\8.4.268\\microsoft.servicefabric.services.8.4.268.nupkg.sha512",
+    "C:\\Users\\stoji\\.nuget\\packages\\system.identitymodel.tokens.jwt\\8.19.1\\system.identitymodel.tokens.jwt.8.19.1.nupkg.sha512"
+  ],
+  "logs": []
+}

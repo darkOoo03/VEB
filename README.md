@@ -83,3 +83,9 @@ Za standardnog korisnika, možete se jednostavno registrovati na formi za regist
 4. **Dijeljenje plana (VIEW / EDIT)**:
    - Korisnik može generisati link ili QR kod sa nivoom pristupa `VIEW` (gde primalac može samo da pregleda detalje) ili `EDIT` (gde primalac može dodavati i menjati destinacije, aktivnosti i troškove).
    - Validacija se vrši na backendu i za svaki zahtev se proverava autorizacija tokena za deljenje.
+5. **Pretraga i personalizacija**:
+   - Omogućena je pretraga planova putovanja u realnom vremenu na kontrolnoj tabli po nazivu ili opisu putovanja.
+   - Kontrolna tabla prikazuje personalizovanu poruku dobrodošlice prilagođenu dobu dana (Dobro jutro / Dobar dan / Dobro veče).
+6. **Šabloni za pakovanje**:
+   - Integrisani su brzi šabloni za pakovanje (npr. letovanje ili poslovni put) koji omogućavaju dodavanje najvažnijih stvari na listu jednim klikom.
+

@@ -6,8 +6,8 @@ import Modal from '../components/Modal';
 import { Plus, Users, Compass, Shield, UserX, Calendar } from 'lucide-react';
 
 export const Dashboard = ({ onSelectPlan }) => {
-  const { plans, loading, fetchPlans, createPlan, deletePlan, authService } = useTravelPlan();
-  const { user } = useAuth();
+  const { plans, loading, fetchPlans, createPlan, deletePlan } = useTravelPlan();
+  const { user, authService } = useAuth();
   
   const [activeTab, setActiveTab] = useState('plans'); // 'plans' or 'admin'
   const [usersList, setUsersList] = useState([]);

@@ -6,7 +6,7 @@ import Modal from '../components/Modal';
 import { Plus, Users, Compass, Shield, UserX, Calendar } from 'lucide-react';
 
 export const Dashboard = ({ onSelectPlan }) => {
-  const { plans, loading, fetchPlans, createPlan, deletePlan } = useTravelPlan();
+  const { plans, loading, fetchPlans, createPlan, deletePlan, error } = useTravelPlan();
   const { user, authService } = useAuth();
   
   const [activeTab, setActiveTab] = useState('plans'); // 'plans' or 'admin'
@@ -165,6 +165,12 @@ export const Dashboard = ({ onSelectPlan }) => {
               onChange={(e) => setSearchTerm(e.target.value)} 
             />
           </div>
+
+          {error && (
+            <div className="badge badge-danger animate-fade" style={{ width: '100%', padding: '12px 16px', marginBottom: '24px', textTransform: 'none', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
+              <span>Greška u komunikaciji sa serverom: {error}</span>
+            </div>
+          )}
 
           {loading ? (
             <p style={styles.infoText}>Učitavanje planova putovanja...</p>

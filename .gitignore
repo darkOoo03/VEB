@@ -1,0 +1,26 @@
+# .NET Build Artifacts
+**/bin/
+**/obj/
+*.user
+*.userosscache
+*.sln.docstates
+.vs/
+
+# Frontend (Node/Vite)
+**/node_modules/
+**/dist/
+.env.local
+.env.development.local
+.env.production.local
+.env.test.local
+
+# Logs and databases
+*.log
+*.sqlite
+*.db
+
+# Operating System Files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/

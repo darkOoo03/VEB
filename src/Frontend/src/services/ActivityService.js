@@ -14,18 +14,40 @@ class ActivityService {
     };
   }
 
+  async handleResponse(response, defaultErrorMsg) {
+    if (!response.ok) {
+      if (response.status === 401) {
+        throw new Error('Vaša sesija je istekla. Molimo vas da se odjavite i ponovo prijavite.');
+      }
+      let errorMsg = defaultErrorMsg;
+      try {
+        const text = await response.text();
+        if (text) {
+          const data = JSON.parse(text);
+          errorMsg = data.message || errorMsg;
+        }
+      } catch (e) {
+        // failed to parse JSON, keep default
+      }
+      throw new Error(errorMsg);
+    }
+
+    try {
+      const text = await response.text();
+      return text ? JSON.parse(text) : null;
+    } catch (e) {
+      throw new Error('Greška pri obradi podataka sa servera.');
+    }
+  }
+
   async getActivities(planId) {
     const response = await fetch(`${this.apiUrl}/travel-plans/${planId}/activities`, {
       method: 'GET',
       headers: this.getHeaders()
     });
 
-    const data = await response.json();
-    if (!response.ok) {
-      throw new Error(data.message || 'Greška pri dohvatanju aktivnosti.');
-    }
-
-    return data.map(a => new Activity(a));
+    const data = await this.handleResponse(response, 'Greška pri dohvatanju aktivnosti.');
+    return data ? data.map(a => new Activity(a)) : [];
   }
 
   async addActivity(planId, activityData, plannedBudget = 0) {
@@ -35,11 +57,7 @@ class ActivityService {
       body: JSON.stringify(activityData)
     });
 
-    const data = await response.json();
-    if (!response.ok) {
-      throw new Error(data.message || 'Greška pri dodavanju aktivnosti.');
-    }
-
+    const data = await this.handleResponse(response, 'Greška pri dodavanju aktivnosti.');
     return new Activity(data);
   }
 
@@ -50,11 +68,7 @@ class ActivityService {
       body: JSON.stringify(activityData)
     });
 
-    const data = await response.json();
-    if (!response.ok) {
-      throw new Error(data.message || 'Greška pri ažuriranju aktivnosti.');
-    }
-
+    const data = await this.handleResponse(response, 'Greška pri ažuriranju aktivnosti.');
     return new Activity(data);
   }
 
@@ -64,12 +78,7 @@ class ActivityService {
       headers: this.getHeaders()
     });
 
-    const data = await response.json();
-    if (!response.ok) {
-      throw new Error(data.message || 'Greška pri brisanju aktivnosti.');
-    }
-
-    return data;
+    return await this.handleResponse(response, 'Greška pri brisanju aktivnosti.');
   }
 
   // Expense actions
@@ -79,12 +88,8 @@ class ActivityService {
       headers: this.getHeaders()
     });
 
-    const data = await response.json();
-    if (!response.ok) {
-      throw new Error(data.message || 'Greška pri dohvatanju troškova.');
-    }
-
-    return data.map(e => new Expense(e));
+    const data = await this.handleResponse(response, 'Greška pri dohvatanju troškova.');
+    return data ? data.map(e => new Expense(e)) : [];
   }
 
   async addExpense(planId, expenseData, plannedBudget = 0) {
@@ -94,11 +99,7 @@ class ActivityService {
       body: JSON.stringify(expenseData)
     });
 
-    const data = await response.json();
-    if (!response.ok) {
-      throw new Error(data.message || 'Greška pri dodavanju troška.');
-    }
-
+    const data = await this.handleResponse(response, 'Greška pri dodavanju troška.');
     return new Expense(data);
   }
 
@@ -109,11 +110,7 @@ class ActivityService {
       body: JSON.stringify(expenseData)
     });
 
-    const data = await response.json();
-    if (!response.ok) {
-      throw new Error(data.message || 'Greška pri ažuriranju troška.');
-    }
-
+    const data = await this.handleResponse(response, 'Greška pri ažuriranju troška.');
     return new Expense(data);
   }
 
@@ -123,12 +120,7 @@ class ActivityService {
       headers: this.getHeaders()
     });
 
-    const data = await response.json();
-    if (!response.ok) {
-      throw new Error(data.message || 'Greška pri brisanju troška.');
-    }
-
-    return data;
+    return await this.handleResponse(response, 'Greška pri brisanju troška.');
   }
 
   // Budget summary (Stateful Service)
@@ -138,12 +130,7 @@ class ActivityService {
       headers: this.getHeaders()
     });
 
-    const data = await response.json();
-    if (!response.ok) {
-      throw new Error(data.message || 'Greška pri dohvatanju budžeta.');
-    }
-
-    return data; // returns PlannedBudget, TotalExpenses, RemainingBudget, TotalEstimatedActivityCosts
+    return await this.handleResponse(response, 'Greška pri dohvatanju budžeta.');
   }
 }
 

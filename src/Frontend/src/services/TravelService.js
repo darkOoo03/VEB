@@ -15,6 +15,32 @@ class TravelService {
     };
   }
 
+  async handleResponse(response, defaultErrorMsg) {
+    if (!response.ok) {
+      if (response.status === 401) {
+        throw new Error('Vaša sesija je istekla. Molimo vas da se odjavite i ponovo prijavite.');
+      }
+      let errorMsg = defaultErrorMsg;
+      try {
+        const text = await response.text();
+        if (text) {
+          const data = JSON.parse(text);
+          errorMsg = data.message || errorMsg;
+        }
+      } catch (e) {
+        // failed to parse JSON, keep default
+      }
+      throw new Error(errorMsg);
+    }
+
+    try {
+      const text = await response.text();
+      return text ? JSON.parse(text) : null;
+    } catch (e) {
+      throw new Error('Greška pri obradi podataka sa servera.');
+    }
+  }
+
   async getPlans(shareToken = null) {
     const url = new URL(`${this.apiUrl}/travel-plans`);
     if (shareToken) url.searchParams.append('shareToken', shareToken);
@@ -24,13 +50,8 @@ class TravelService {
       headers: this.getHeaders()
     });
 
-    if (!response.ok) {
-      const data = await response.json();
-      throw new Error(data.message || 'Greška pri dohvatanju planova.');
-    }
-
-    const data = await response.json();
-    return data.map(p => new TravelPlan(p));
+    const data = await this.handleResponse(response, 'Greška pri dohvatanju planova.');
+    return data ? data.map(p => new TravelPlan(p)) : [];
   }
 
   async getPlan(id, shareToken = null) {
@@ -42,11 +63,7 @@ class TravelService {
       headers: this.getHeaders()
     });
 
-    const data = await response.json();
-    if (!response.ok) {
-      throw new Error(data.message || 'Plan nije pronađen.');
-    }
-
+    const data = await this.handleResponse(response, 'Plan nije pronađen.');
     return {
       plan: new TravelPlan(data.plan),
       accessLevel: data.accessLevel
@@ -60,11 +77,7 @@ class TravelService {
       body: JSON.stringify(planData)
     });
 
-    const data = await response.json();
-    if (!response.ok) {
-      throw new Error(data.message || 'Greška pri kreiranju plana.');
-    }
-
+    const data = await this.handleResponse(response, 'Greška pri kreiranju plana.');
     return new TravelPlan(data);
   }
 
@@ -78,11 +91,7 @@ class TravelService {
       body: JSON.stringify(planData)
     });
 
-    const data = await response.json();
-    if (!response.ok) {
-      throw new Error(data.message || 'Greška pri ažuriranju plana.');
-    }
-
+    const data = await this.handleResponse(response, 'Greška pri ažuriranju plana.');
     return new TravelPlan(data);
   }
 
@@ -92,12 +101,7 @@ class TravelService {
       headers: this.getHeaders()
     });
 
-    const data = await response.json();
-    if (!response.ok) {
-      throw new Error(data.message || 'Greška pri brisanju plana.');
-    }
-
-    return data;
+    return await this.handleResponse(response, 'Greška pri brisanju plana.');
   }
 
   // Destination actions
@@ -111,11 +115,7 @@ class TravelService {
       body: JSON.stringify(destData)
     });
 
-    const data = await response.json();
-    if (!response.ok) {
-      throw new Error(data.message || 'Greška pri dodavanju destinacije.');
-    }
-
+    const data = await this.handleResponse(response, 'Greška pri dodavanju destinacije.');
     return new Destination(data);
   }
 
@@ -129,11 +129,7 @@ class TravelService {
       body: JSON.stringify(destData)
     });
 
-    const data = await response.json();
-    if (!response.ok) {
-      throw new Error(data.message || 'Greška pri ažuriranju destinacije.');
-    }
-
+    const data = await this.handleResponse(response, 'Greška pri ažuriranju destinacije.');
     return new Destination(data);
   }
 
@@ -146,12 +142,7 @@ class TravelService {
       headers: this.getHeaders()
     });
 
-    const data = await response.json();
-    if (!response.ok) {
-      throw new Error(data.message || 'Greška pri brisanju destinacije.');
-    }
-
-    return data;
+    return await this.handleResponse(response, 'Greška pri brisanju destinacije.');
   }
 
   // Packing list actions
@@ -165,11 +156,7 @@ class TravelService {
       body: JSON.stringify(itemData)
     });
 
-    const data = await response.json();
-    if (!response.ok) {
-      throw new Error(data.message || 'Greška pri dodavanju stavke.');
-    }
-
+    const data = await this.handleResponse(response, 'Greška pri dodavanju stavke.');
     return new PackingItem(data);
   }
 
@@ -183,11 +170,7 @@ class TravelService {
       body: JSON.stringify(itemData)
     });
 
-    const data = await response.json();
-    if (!response.ok) {
-      throw new Error(data.message || 'Greška pri ažuriranju stavke.');
-    }
-
+    const data = await this.handleResponse(response, 'Greška pri ažuriranju stavke.');
     return new PackingItem(data);
   }
 
@@ -200,12 +183,7 @@ class TravelService {
       headers: this.getHeaders()
     });
 
-    const data = await response.json();
-    if (!response.ok) {
-      throw new Error(data.message || 'Greška pri brisanju stavke.');
-    }
-
-    return data;
+    return await this.handleResponse(response, 'Greška pri brisanju stavke.');
   }
 
   // Sharing
@@ -216,12 +194,7 @@ class TravelService {
       body: JSON.stringify({ accessLevel })
     });
 
-    const data = await response.json();
-    if (!response.ok) {
-      throw new Error(data.message || 'Greška pri generisanju linka.');
-    }
-
-    return data; // returns share details
+    return await this.handleResponse(response, 'Greška pri generisanju linka.');
   }
 
   async getPlanByShareToken(token) {
@@ -230,11 +203,7 @@ class TravelService {
       headers: { 'Content-Type': 'application/json' }
     });
 
-    const data = await response.json();
-    if (!response.ok) {
-      throw new Error(data.message || 'Plan za deljenje nije dostupan.');
-    }
-
+    const data = await this.handleResponse(response, 'Plan za deljenje nije dostupan.');
     return {
       plan: new TravelPlan(data.plan),
       accessLevel: data.accessLevel
